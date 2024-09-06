@@ -3,7 +3,7 @@ package de.indie42.guessiron.scalecalculator.direction
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 
-class ScaleDirectionTop: IScaleDirection {
+class ScaleDirectionTop : IScaleDirection {
     override fun getLineLengthAtZero(): Float {
         return 0F
     }
@@ -20,7 +20,11 @@ class ScaleDirectionTop: IScaleDirection {
         return position - offset
     }
 
-    override fun getLineCounter(lineCounter: Int, startDistance: Float, getHeight: () -> Float): Float {
+    override fun getLineCounter(
+        lineCounter: Int,
+        startDistance: Float,
+        getHeight: () -> Float
+    ): Float {
         return lineCounter + startDistance
     }
 }

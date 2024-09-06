@@ -55,7 +55,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun DisplayBorderScreen(
     viewModel: GuessIronViewModel = viewModel(),
     onEdit: (ScalaDirection, Float) -> Unit,
-    onBack: () -> Unit) {
+    onBack: () -> Unit
+) {
 
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -88,22 +89,26 @@ fun DisplayBorderScreen(
 
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        Column(modifier = Modifier
-            .padding(innerPadding)
-            .verticalScroll(scrollState),
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
 
-            if (isLandsacpe){
-                Row (modifier = Modifier.padding(16.dp),horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
+            if (isLandsacpe) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
+                ) {
                     MeasureToEdgeObject()
                     Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                         ConfigurationSettings(onEdit, viewModel)
                     }
                 }
-            }
-            else {
+            } else {
                 MeasureToEdgeObject()
 
                 ConfigurationSettings(onEdit, viewModel)
@@ -136,9 +141,21 @@ private fun ConfigurationSettings(
                 contentDescription = stringResource(id = R.string.ScreenMarginTop),
             )
         },
-        supportingContent = { Text("${String.format(guessIronUi.unitSystem.getFormat(), guessIronData.displayBorder.top) } ${guessIronUi.unitSystem.getUnit()}") },
+        supportingContent = {
+            Text(
+                "${
+                    String.format(
+                        guessIronUi.unitSystem.getFormat(),
+                        guessIronData.displayBorder.top
+                    )
+                } ${guessIronUi.unitSystem.getUnit()}"
+            )
+        },
         trailingContent = {
-            Icon(imageVector = Icons.Filled.Edit, contentDescription = stringResource(id = R.string.ScreenMarginTop))
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = stringResource(id = R.string.ScreenMarginTop)
+            )
         }
     )
     ListItem(
@@ -147,11 +164,26 @@ private fun ConfigurationSettings(
         },
         headlineContent = { Text(stringResource(id = R.string.ScreenMarginBottom)) },
         leadingContent = {
-            Icon(imageVector = Icons.Filled.Dock, contentDescription = stringResource(id = R.string.ScreenMarginBottom))
+            Icon(
+                imageVector = Icons.Filled.Dock,
+                contentDescription = stringResource(id = R.string.ScreenMarginBottom)
+            )
         },
-        supportingContent = { Text("${String.format(guessIronUi.unitSystem.getFormat(), guessIronData.displayBorder.bottom)} ${guessIronUi.unitSystem.getUnit()}") },
+        supportingContent = {
+            Text(
+                "${
+                    String.format(
+                        guessIronUi.unitSystem.getFormat(),
+                        guessIronData.displayBorder.bottom
+                    )
+                } ${guessIronUi.unitSystem.getUnit()}"
+            )
+        },
         trailingContent = {
-            Icon(imageVector = Icons.Filled.Edit, contentDescription = stringResource(id = R.string.ScreenMarginBottom))
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = stringResource(id = R.string.ScreenMarginBottom)
+            )
         }
 
     )

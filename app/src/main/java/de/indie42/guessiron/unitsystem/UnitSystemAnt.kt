@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import de.indie42.guessiron.UnitSystem
 
-class UnitSystemAnt: IUnitsystem {
+class UnitSystemAnt : IUnitsystem {
     override fun getUnitsystem(): UnitSystem {
         return UnitSystem.ANT
     }
@@ -36,6 +36,6 @@ class UnitSystemAnt: IUnitsystem {
             TypedValue.COMPLEX_UNIT_IN,
             scaleFactor,
             Resources.getSystem().displayMetrics
-        ) * (1.0F / (25.4F/factor) )
+        ) * (1.0F / (25.4F / factor))
     }
 }

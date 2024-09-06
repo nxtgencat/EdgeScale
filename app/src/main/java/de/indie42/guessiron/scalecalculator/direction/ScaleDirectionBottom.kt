@@ -6,7 +6,7 @@ import de.indie42.guessiron.scalecalculator.orientation.IScaleOrientation
 
 class ScaleDirectionBottom(
     val orientation: IScaleOrientation
-): IScaleDirection {
+) : IScaleDirection {
     override fun getLineLengthAtZero(): Float {
         return 0F
     }
@@ -21,10 +21,14 @@ class ScaleDirectionBottom(
 
     override fun getLineCounterInPixel(position: Float, offset: Float, drawSize: Size): Float {
 
-        return orientation.getHeight( drawSize ) - position + offset
+        return orientation.getHeight(drawSize) - position + offset
     }
 
-    override fun getLineCounter(lineCounter: Int, startDistance: Float, getHeight: () -> Float): Float {
+    override fun getLineCounter(
+        lineCounter: Int,
+        startDistance: Float,
+        getHeight: () -> Float
+    ): Float {
         return lineCounter + startDistance
     }
 }

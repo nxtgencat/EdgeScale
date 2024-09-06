@@ -7,7 +7,7 @@ import kotlin.math.roundToInt
 
 class ScaleDirectionCenter(
     val orientation: IScaleOrientation
-): IScaleDirection {
+) : IScaleDirection {
     override fun getLineLengthAtZero(): Float {
         return 10F
     }
@@ -31,20 +31,24 @@ class ScaleDirectionCenter(
 
         val directionOffset = Offset(0F, (displayOffset / 2F) * dpUnit) + oddOffset
 
-        return orientation.getOffset( directionOffset )
+        return orientation.getOffset(directionOffset)
     }
 
     override fun getLineCounterInPixel(position: Float, offset: Float, drawSize: Size): Float {
         return position - offset
     }
 
-    override fun getLineCounter(lineCounter: Int, startDistance: Float, getHeight: () -> Float): Float {
+    override fun getLineCounter(
+        lineCounter: Int,
+        startDistance: Float,
+        getHeight: () -> Float
+    ): Float {
         // 0 ... 39 .... 78 ; pixel 6 pro -> 2891px/20.281652mm = 142,5426mm (143)
         var displayLength = getHeight()
-        if ( displayLength % 2 != 0F )
+        if (displayLength % 2 != 0F)
             displayLength -= 1
 
-        val center = (displayLength/2F).roundToInt()
+        val center = (displayLength / 2F).roundToInt()
 
         var counterFromCenter = center - lineCounter
 

@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import de.indie42.guessiron.UnitSystem
 
-class UnitSystemBaseMetric: IUnitsystem {
+class UnitSystemBaseMetric : IUnitsystem {
     override fun getUnitsystem(): UnitSystem {
         return UnitSystem.METRIC
     }

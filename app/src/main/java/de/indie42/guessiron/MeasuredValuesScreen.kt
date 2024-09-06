@@ -169,9 +169,13 @@ fun MeasuredValuesScreen(
             if (showEditValueDialog) {
                 val measuredValue = measuredValues.measuredValues[selectedMeasuredValue]
 
-                val measuredDistanceFloat = if (measuredValue.measured == 0) measuredValue.value else measuredValue.measured
+                val measuredDistanceFloat =
+                    if (measuredValue.measured == 0) measuredValue.value else measuredValue.measured
 
-                val measuredDistance = if (measuredValue.unit == "in") String.format("%.1f", measuredDistanceFloat) else
+                val measuredDistance = if (measuredValue.unit == "in") String.format(
+                    "%.1f",
+                    measuredDistanceFloat
+                ) else
                     String().format("%.0f", measuredDistanceFloat)
 
                 SaveDialog(
@@ -205,7 +209,10 @@ fun MeasuredValuesScreen(
                             showEditRow = true,
                             onShowValue = {
                                 scope.launch {
-                                    viewModel.setMeasuredValue(if (measuredValue.measured == 0) measuredValue.value else measuredValue.measured.toFloat(), measuredValue.unit)
+                                    viewModel.setMeasuredValue(
+                                        if (measuredValue.measured == 0) measuredValue.value else measuredValue.measured.toFloat(),
+                                        measuredValue.unit
+                                    )
                                     showMenuDialog = false
                                     onBack()
                                 }
@@ -244,8 +251,12 @@ fun MeasuredValueCard(
 
     val measuredUnit = if (measuredValue.unit == "") "mm" else measuredValue.unit
 
-    val measuredDistanceFloat = if (measuredValue.value == 0F) measuredValue.measured.toFloat() else measuredValue.value
-    val measuredDistance = if (measuredUnit == "in") String.format("%.1f", measuredDistanceFloat) else String.format("%.0f", measuredDistanceFloat)
+    val measuredDistanceFloat =
+        if (measuredValue.value == 0F) measuredValue.measured.toFloat() else measuredValue.value
+    val measuredDistance = if (measuredUnit == "in") String.format(
+        "%.1f",
+        measuredDistanceFloat
+    ) else String.format("%.0f", measuredDistanceFloat)
 
     ElevatedCard(
         modifier = modifier,

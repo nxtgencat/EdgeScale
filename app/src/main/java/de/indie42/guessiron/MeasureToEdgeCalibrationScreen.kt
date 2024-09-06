@@ -66,8 +66,15 @@ private fun ConfigOffset(
 
     Text(
         modifier = Modifier.padding(8.dp),
-        text = AnnotatedString(text = stringResource(id = R.string.Margin) + ": " + "${String.format(unitFormat, edgeDistance)} $unit"),
-                style = MaterialTheme.typography.bodyLarge
+        text = AnnotatedString(
+            text = stringResource(id = R.string.Margin) + ": " + "${
+                String.format(
+                    unitFormat,
+                    edgeDistance
+                )
+            } $unit"
+        ),
+        style = MaterialTheme.typography.bodyLarge
     )
 
     Button(modifier = Modifier.padding(6.dp), onClick = {
@@ -127,7 +134,7 @@ fun MeasureToEdgeCalibrationScreen(
 
     val winInsetsSystembars = dynamicSystemBar(true)
 
-    var displayRotation by remember { mutableIntStateOf(android.view.Surface.ROTATION_0)}
+    var displayRotation by remember { mutableIntStateOf(android.view.Surface.ROTATION_0) }
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         displayRotation = LocalContext.current.display?.rotation ?: android.view.Surface.ROTATION_0
@@ -166,20 +173,20 @@ fun MeasureToEdgeCalibrationScreen(
                 },
             color = MaterialTheme.colorScheme.background
         ) {
-        ScalaBar(
-            scalaDirection,
-            ScalaPosition.Left,
-            scalaFactor = guessIronUiState.scalaFactor,
-            unitSystem = guessIronUiState.unitSystem,
-            scalaStartDistance = edgeDistance
-        )
-        ScalaBar(
-            scalaDirection,
-            ScalaPosition.Right,
-            scalaFactor = guessIronUiState.scalaFactor,
-            unitSystem = guessIronUiState.unitSystem,
-            scalaStartDistance = edgeDistance
-        )
+            ScalaBar(
+                scalaDirection,
+                ScalaPosition.Left,
+                scalaFactor = guessIronUiState.scalaFactor,
+                unitSystem = guessIronUiState.unitSystem,
+                scalaStartDistance = edgeDistance
+            )
+            ScalaBar(
+                scalaDirection,
+                ScalaPosition.Right,
+                scalaFactor = guessIronUiState.scalaFactor,
+                unitSystem = guessIronUiState.unitSystem,
+                scalaStartDistance = edgeDistance
+            )
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -257,9 +264,10 @@ fun MeasureToEdgeCalibrationHelp(scalaDirection: ScalaDirection = ScalaDirection
             .scale(0.75F),
         color = MaterialTheme.colorScheme.background
     ) {
-        Box( modifier = Modifier
-            .size(200.dp, 175.dp)
-            .rotate(if (scalaDirection == ScalaDirection.Bottom) 180F else 0F)
+        Box(
+            modifier = Modifier
+                .size(200.dp, 175.dp)
+                .rotate(if (scalaDirection == ScalaDirection.Bottom) 180F else 0F)
         ) {
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -296,7 +304,8 @@ fun MeasureToEdgeCalibrationHelp(scalaDirection: ScalaDirection = ScalaDirection
                     start = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 90.dp,
                     top = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 66.dp,
                     end = if (scalaDirection == ScalaDirection.Bottom) 90.dp else 0.dp,
-                    bottom = if (scalaDirection == ScalaDirection.Bottom) 60.dp else 0.dp)
+                    bottom = if (scalaDirection == ScalaDirection.Bottom) 60.dp else 0.dp
+                )
         ) {
             ScalaBar(
                 direction = scalaDirection,
@@ -306,14 +315,16 @@ fun MeasureToEdgeCalibrationHelp(scalaDirection: ScalaDirection = ScalaDirection
                 supportLandscapeMode = false
             )
         }
-        Box(modifier = Modifier
-            .size(200.dp, 175.dp)
-            .padding(
-                start = if (scalaDirection == ScalaDirection.Bottom) 125.dp else 0.dp,
-                top = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 16.dp,
-                end = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 125.dp,
-                bottom = if (scalaDirection == ScalaDirection.Bottom) 8.dp else 0.dp
-            ) ){
+        Box(
+            modifier = Modifier
+                .size(200.dp, 175.dp)
+                .padding(
+                    start = if (scalaDirection == ScalaDirection.Bottom) 125.dp else 0.dp,
+                    top = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 16.dp,
+                    end = if (scalaDirection == ScalaDirection.Bottom) 0.dp else 125.dp,
+                    bottom = if (scalaDirection == ScalaDirection.Bottom) 8.dp else 0.dp
+                )
+        ) {
             ScalaBar(
                 direction = scalaDirection,
                 scalaPosition = if (scalaDirection == ScalaDirection.Bottom) ScalaPosition.Left else ScalaPosition.Right,

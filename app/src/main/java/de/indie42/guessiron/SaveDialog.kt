@@ -83,9 +83,10 @@ fun SaveDialog(
                         placeholder = { Text(stringResource(id = R.string.Name_example)) },
                         trailingIcon = {
 
-                            Icon(imageVector = Icons.Filled.Clear, contentDescription = stringResource(
-                                id = R.string.Delete
-                            ),
+                            Icon(imageVector = Icons.Filled.Clear,
+                                contentDescription = stringResource(
+                                    id = R.string.Delete
+                                ),
                                 modifier = Modifier.clickable {
                                     text = ""
                                     focusInput.requestFocus()
@@ -139,7 +140,7 @@ fun DialogPreview() {
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
 
                 ExtendedFloatingActionButton(
                     modifier = Modifier.padding(16.dp),
@@ -167,13 +168,13 @@ fun DialogPreview() {
                 }
                 OutlinedIconButton(
                     modifier = Modifier.padding(8.dp),
-                    onClick = {  },
+                    onClick = { },
                 ) {
                     Icon(Icons.Filled.RestartAlt, "Floating action button.")
                 }
                 OutlinedIconButton(
-                    modifier = Modifier.padding( 8.dp),
-                    onClick = {  },
+                    modifier = Modifier.padding(8.dp),
+                    onClick = { },
                 ) {
                     Icon(Icons.Filled.Remove, "Floating action button.")
                 }

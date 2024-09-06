@@ -10,5 +10,5 @@ interface IUnitsystem {
     fun convertToBaseUnit(distance: Float): Float
     fun convertFromBaseUnit(distance: Float): Float
 
-    fun applDimension(scaleFactor: Float):Float
+    fun applDimension(scaleFactor: Float): Float
 }

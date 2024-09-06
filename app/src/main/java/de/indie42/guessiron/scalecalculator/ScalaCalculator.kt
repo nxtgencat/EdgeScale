@@ -17,13 +17,14 @@ import de.indie42.guessiron.unitsystem.IUnitsystem
 import kotlin.math.roundToInt
 
 
-class ScalaCalculator (
+class ScalaCalculator(
     val scalaDirection: ScalaDirection,
     val scalaPosition: ScalaPosition,
     scalaFactor: Float,
     startDistance: Float,
     val unitSystem: IUnitsystem,
-    val isLandsacpe: Boolean) {
+    val isLandsacpe: Boolean
+) {
 
     private val startDistance = startDistance * unitSystem.getDecimal()
 
@@ -31,49 +32,63 @@ class ScalaCalculator (
 
     private val orientation = if (isLandsacpe) LandscapeOrientation() else PortraitOrientation()
 
-    private val scalePosition = if (scalaPosition == ScalaPosition.Right) ScaleOnRightPosition(orientation) else ScaleOnLeftPosition()
+    private val scalePosition =
+        if (scalaPosition == ScalaPosition.Right) ScaleOnRightPosition(orientation) else ScaleOnLeftPosition()
 
-    private val scaleDirection = if ( scalaDirection == ScalaDirection.Center) ScaleDirectionCenter(orientation) else if ( scalaDirection == ScalaDirection.Bottom) ScaleDirectionBottom(orientation) else ScaleDirectionTop()
+    private val scaleDirection =
+        if (scalaDirection == ScalaDirection.Center) ScaleDirectionCenter(orientation) else if (scalaDirection == ScalaDirection.Bottom) ScaleDirectionBottom(
+            orientation
+        ) else ScaleDirectionTop()
 
     private val displayMetrics = Resources.getSystem().displayMetrics
 
     private val dpmm = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 1f, displayMetrics)
 
-    private val dpunitWithScalaFactor = unitSystem.applDimension(scalaFactor) / unitSystem.getDecimal()
+    private val dpunitWithScalaFactor =
+        unitSystem.applDimension(scalaFactor) / unitSystem.getDecimal()
 
-    fun getHeightLength(drawSize: Size):Int{
-        return (getScaleLengthInPixel(drawSize)/dpunitWithScalaFactor).roundToInt()
+    fun getHeightLength(drawSize: Size): Int {
+        return (getScaleLengthInPixel(drawSize) / dpunitWithScalaFactor).roundToInt()
     }
 
-    fun getScaleLengthInPixel(drawSize: Size): Float{
+    fun getScaleLengthInPixel(drawSize: Size): Float {
         return orientation.getHeight(drawSize)
     }
 
-    fun getDistanceinPixel(distance: Float):Float{
-        return distance*dpunitWithScalaFactor
+    fun getDistanceinPixel(distance: Float): Float {
+        return distance * dpunitWithScalaFactor
     }
 
-    private fun directionOffset(drawSize: Size): Offset{
+    private fun directionOffset(drawSize: Size): Offset {
         return scaleDirection.getOffset(drawSize, dpunitWithScalaFactor)
     }
 
-    fun getLinePosition(lineCounter: Int, drawSize: Size): Int{
+    fun getLinePosition(lineCounter: Int, drawSize: Size): Int {
         return scaleDirection.getLineCounter(lineCounter, startDistance, getHeight = {
             return@getLineCounter getHeightLength(drawSize).toFloat()
-        } ).toInt()
+        }).toInt()
     }
 
-    fun getScalaStartX(drawSize: Size): Float{
+    fun getScalaStartX(drawSize: Size): Float {
         return scalePosition.getScaleStartX(drawSize)
     }
 
-    private fun getScalaY(lineCounter: Int, drawSize: Size): Float{
+    private fun getScalaY(lineCounter: Int, drawSize: Size): Float {
 
-        return scaleDirection.getLineCounterInPixel( dpunitWithScalaFactor * lineCounter, startDistanceFraction * dpunitWithScalaFactor, drawSize = drawSize )
+        return scaleDirection.getLineCounterInPixel(
+            dpunitWithScalaFactor * lineCounter,
+            startDistanceFraction * dpunitWithScalaFactor,
+            drawSize = drawSize
+        )
     }
 
     fun getScalaLineOffsetStart(lineCounter: Int, drawSize: Size): Offset {
-        val offset = orientation.getOffset( Offset(x = getScalaStartX(drawSize), y = getScalaY(lineCounter, drawSize)) )
+        val offset = orientation.getOffset(
+            Offset(
+                x = getScalaStartX(drawSize),
+                y = getScalaY(lineCounter, drawSize)
+            )
+        )
 
         return offset + directionOffset(drawSize)
     }
@@ -82,11 +97,11 @@ class ScalaCalculator (
 
         val lineLength = getLineLength(lineCounter, drawSize)
 
-        val rawOffset = Offset( x = lineLength, y = getScalaY(lineCounter, drawSize) )
+        val rawOffset = Offset(x = lineLength, y = getScalaY(lineCounter, drawSize))
 
         val positionOffset = scalePosition.getScaleEndOffset(drawSize, rawOffset)
 
-        val orientationOffset = orientation.getOffset( positionOffset )
+        val orientationOffset = orientation.getOffset(positionOffset)
 
         return orientationOffset + directionOffset(drawSize)
 
@@ -94,8 +109,7 @@ class ScalaCalculator (
 
     val MAX_LINE = 8F * dpmm
 
-    fun getLineLength(lineCounter: Int, drawSize: Size): Float
-    {
+    fun getLineLength(lineCounter: Int, drawSize: Size): Float {
         val lineCounterLPosition = getLinePosition(lineCounter, drawSize)
 
         if (lineCounterLPosition == 0)
@@ -109,13 +123,13 @@ class ScalaCalculator (
         return 3F * dpmm // 3mm Line für 1 mm
     }
 
-    fun getStrokeWidth(lineCounter: Int, drawSize: Size): Float{
+    fun getStrokeWidth(lineCounter: Int, drawSize: Size): Float {
 
         val lineCounterLPosition = getLinePosition(lineCounter, drawSize)
 
         if (lineCounterLPosition == 0)
             return scaleDirection.getStrokeWidthAtZero()
-        else if (lineCounterLPosition % 10 == 0 ) {
+        else if (lineCounterLPosition % 10 == 0) {
             return 5F
         } else if (lineCounterLPosition % 5 == 0) {
             return 5F

@@ -33,7 +33,7 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
         }
     }
 
-    suspend fun changeVersion(version:Int) {
+    suspend fun changeVersion(version: Int) {
         guessIronDataDataStore.updateData { currentPreferences ->
             currentPreferences.toBuilder().setVersion(version).build()
         }
@@ -45,7 +45,7 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
         }
     }
 
-    suspend fun changeDisplayBorder( displayBorder: DisplayBorder ) {
+    suspend fun changeDisplayBorder(displayBorder: DisplayBorder) {
         guessIronDataDataStore.updateData { currentPreferences ->
             currentPreferences.toBuilder().setDisplayBorder(displayBorder).build()
         }
@@ -54,23 +54,26 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
     suspend fun disableEndlessAutomaticInfo() {
         guessIronDataDataStore.updateData { currentPreferences ->
             val currentAutomaticSetting = currentPreferences.automacticSetting;
-            val newAutomaticSetting = currentAutomaticSetting.toBuilder().setDisableInfo(true).build()
+            val newAutomaticSetting =
+                currentAutomaticSetting.toBuilder().setDisableInfo(true).build()
             currentPreferences.toBuilder().setAutomacticSetting(newAutomaticSetting).build()
         }
     }
 
-    suspend fun changeSensitivity(sensitivity: Float ) {
+    suspend fun changeSensitivity(sensitivity: Float) {
         guessIronDataDataStore.updateData { currentPreferences ->
             val currentAutomaticSetting = currentPreferences.automacticSetting;
-            val newAutomaticSetting = currentAutomaticSetting.toBuilder().setSensitivity(sensitivity).build()
+            val newAutomaticSetting =
+                currentAutomaticSetting.toBuilder().setSensitivity(sensitivity).build()
             currentPreferences.toBuilder().setAutomacticSetting(newAutomaticSetting).build()
         }
     }
 
-    suspend fun changeSettlingTime( settlingTime: Int ) {
+    suspend fun changeSettlingTime(settlingTime: Int) {
         guessIronDataDataStore.updateData { currentPreferences ->
             val currentAutomaticSetting = currentPreferences.automacticSetting;
-            val newAutomaticSetting = currentAutomaticSetting.toBuilder().setSettlingTime(settlingTime).build()
+            val newAutomaticSetting =
+                currentAutomaticSetting.toBuilder().setSettlingTime(settlingTime).build()
             currentPreferences.toBuilder().setAutomacticSetting(newAutomaticSetting).build()
         }
     }
@@ -89,7 +92,8 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
 
     suspend fun changeMeasureButtonFunction(changeMeasureButtonFunction: MeasureButtonFunction) {
         guessIronDataDataStore.updateData { currentPreferences ->
-            currentPreferences.toBuilder().setMeasureButtonFunction(changeMeasureButtonFunction).build()
+            currentPreferences.toBuilder().setMeasureButtonFunction(changeMeasureButtonFunction)
+                .build()
         }
     }
 
@@ -112,7 +116,7 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
         }
     }
 
-    suspend fun upgradeValues( toVersion: Int) {
+    suspend fun upgradeValues(toVersion: Int) {
 
         guessIronDataDataStore.updateData { currentPreferences ->
 
@@ -121,10 +125,14 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
             var builder = currentPreferences.toBuilder().clearMeasuredValues()
 
             existingValues.forEach {
-                builder = builder.addMeasuredValues(it.toBuilder().setValue(it.measured.toFloat()).build())
+                builder = builder.addMeasuredValues(
+                    it.toBuilder().setValue(it.measured.toFloat()).build()
+                )
             }
 
-            builder.setVersion(toVersion).setDisplayBorder(DisplayBorder.newBuilder().setBottom(0F).setTop(0F).build()).setScalaOffsetActive(false).build()
+            builder.setVersion(toVersion)
+                .setDisplayBorder(DisplayBorder.newBuilder().setBottom(0F).setTop(0F).build())
+                .setScalaOffsetActive(false).build()
         }
     }
 
@@ -139,7 +147,9 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
             val indexOfValue = currentPreferences.measuredValuesList.indexOf(measuredValue)
             val measuredValueFromList = currentPreferences.measuredValuesList[indexOfValue]
 
-            currentPreferences.toBuilder().setMeasuredValues(indexOfValue, measuredValueFromList.toBuilder().setName(name)).build()
+            currentPreferences.toBuilder()
+                .setMeasuredValues(indexOfValue, measuredValueFromList.toBuilder().setName(name))
+                .build()
         }
     }
 
@@ -152,7 +162,8 @@ class GuessIronDataRepository(private val guessIronDataDataStore: DataStore<Gues
 
     suspend fun changeUnitsystem(unitSystem: UnitSystem, newDisplayBorder: DisplayBorder) {
         guessIronDataDataStore.updateData { currentPreferences ->
-            currentPreferences.toBuilder().setUnitSystem(unitSystem).setDisplayBorder(newDisplayBorder).build()
+            currentPreferences.toBuilder().setUnitSystem(unitSystem)
+                .setDisplayBorder(newDisplayBorder).build()
         }
     }
 }

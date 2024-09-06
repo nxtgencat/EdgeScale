@@ -35,7 +35,11 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun DisclaimerScreen(viewModel: GuessIronViewModel, onStartCalibration: () -> Unit, onBack: () -> Unit) {
+fun DisclaimerScreen(
+    viewModel: GuessIronViewModel,
+    onStartCalibration: () -> Unit,
+    onBack: () -> Unit
+) {
 
     val scope = rememberCoroutineScope()
 
@@ -68,33 +72,39 @@ fun DisclaimerScreen(viewModel: GuessIronViewModel, onStartCalibration: () -> Un
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-        )  {
+        ) {
 
 
-            Row (  modifier = Modifier.height(200.dp) ) {
+            Row(modifier = Modifier.height(200.dp)) {
                 Box(
                     modifier = Modifier
                 ) {
                     Surface(
                         modifier = Modifier
                             .padding(16.dp)
-                            .height(200.dp)
-                        ,
+                            .height(200.dp),
                         color = MaterialTheme.colorScheme.background,
                     ) {
-                        ScalaBar(scalaPosition = ScalaPosition.Left, measureOffset = Offset( x= 0F, y = scale), scalaFactor = 1F)
+                        ScalaBar(
+                            scalaPosition = ScalaPosition.Left,
+                            measureOffset = Offset(x = 0F, y = scale),
+                            scalaFactor = 1F
+                        )
                     }
                 }
             }
             Text(
                 text = stringResource(id = R.string.hello),
-                style = MaterialTheme.typography.headlineMedium)
+                style = MaterialTheme.typography.headlineMedium
+            )
             Text(text = stringResource(id = R.string.disclaimer_info))
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            Text(text = stringResource(id = R.string.calibration),
-                style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = stringResource(id = R.string.calibration),
+                style = MaterialTheme.typography.headlineMedium
+            )
             Text(text = stringResource(id = R.string.calibration_info))
 
             Spacer(modifier = Modifier.padding(8.dp))
@@ -105,8 +115,14 @@ fun DisclaimerScreen(viewModel: GuessIronViewModel, onStartCalibration: () -> Un
                     onStartCalibration()
                 }
             }) {
-                Icon(Icons.Filled.ZoomOutMap, contentDescription = stringResource(id = R.string.StartCalibration))
-                Text(modifier = Modifier.padding(6.dp), text = stringResource(id = R.string.calibration))
+                Icon(
+                    Icons.Filled.ZoomOutMap,
+                    contentDescription = stringResource(id = R.string.StartCalibration)
+                )
+                Text(
+                    modifier = Modifier.padding(6.dp),
+                    text = stringResource(id = R.string.calibration)
+                )
             }
             Spacer(modifier = Modifier.padding(16.dp))
             OutlinedButton(onClick = {

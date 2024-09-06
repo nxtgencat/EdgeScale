@@ -43,27 +43,31 @@ fun UnitsystemConfigurationScreen(viewModel: GuessIronViewModel, onBack: () -> U
 
     val guessIronState by viewModel.uiState.collectAsState()
 
-    val radioOptions = mapOf(UnitSystem.METRIC to stringResource(id = R.string.Metric), UnitSystem.IMPERIAL to stringResource(id = R.string.Imperial))
+    val radioOptions = mapOf(
+        UnitSystem.METRIC to stringResource(id = R.string.Metric),
+        UnitSystem.IMPERIAL to stringResource(id = R.string.Imperial)
+    )
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(guessIronState.unitSystem.getUnitsystem()) }
 
-    Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
-            title = {
-                Text(stringResource(id = R.string.Unitsystem))
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.Back)
-                    )
-                }
-            },
-            scrollBehavior = scrollBehavior,
-        )
-    },
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+                title = {
+                    Text(stringResource(id = R.string.Unitsystem))
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.Back)
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
 
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
@@ -71,7 +75,8 @@ fun UnitsystemConfigurationScreen(viewModel: GuessIronViewModel, onBack: () -> U
         Column(
             Modifier
                 .padding(innerPadding)
-                .selectableGroup()) {
+                .selectableGroup()
+        ) {
             radioOptions.forEach { unitSystem ->
                 Row(
                     Modifier

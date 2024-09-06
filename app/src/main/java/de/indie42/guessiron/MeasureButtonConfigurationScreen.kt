@@ -74,7 +74,8 @@ fun MeasureButtonConfigurationScreen(viewModel: GuessIronViewModel, onBack: () -
     ) { innerPadding ->
 
 
-        Column( modifier = Modifier.padding(innerPadding)
+        Column(
+            modifier = Modifier.padding(innerPadding)
         ) {
             Column(
                 modifier = Modifier

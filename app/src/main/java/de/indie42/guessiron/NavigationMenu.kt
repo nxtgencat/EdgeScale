@@ -50,18 +50,18 @@ fun MeasureMenu(
     }
 
 
-    val directionIcon = when(scalaDirection){
+    val directionIcon = when (scalaDirection) {
         ScalaDirection.Top -> Icons.Filled.VerticalAlignTop
         ScalaDirection.Bottom -> Icons.Filled.VerticalAlignBottom
         ScalaDirection.Center -> Icons.Filled.VerticalAlignCenter
     }
 
-    val measureToEdgeIcon = when(scalaDirection){
+    val measureToEdgeIcon = when (scalaDirection) {
         ScalaDirection.Center -> Icons.Filled.Smartphone
         else -> Icons.Filled.Dock
     }
 
-    val upsideDownRotation = when(scalaDirection){
+    val upsideDownRotation = when (scalaDirection) {
         ScalaDirection.Bottom -> 180F
         else -> 0F
     }
@@ -72,19 +72,40 @@ fun MeasureMenu(
     )
     val defaultColor = IconButtonDefaults.iconButtonColors()
 
-    Row( modifier = Modifier.padding(8.dp),horizontalArrangement = Arrangement.SpaceEvenly) {
+    Row(modifier = Modifier.padding(8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
 
-        IconButton( modifier = Modifier.rotate(iconRotation.toFloat()), onClick = onClickSwitchScala) {
+        IconButton(
+            modifier = Modifier.rotate(iconRotation.toFloat()),
+            onClick = onClickSwitchScala
+        ) {
             Icon(directionIcon, contentDescription = stringResource(id = R.string.SwitchScala))
         }
-        IconButton( modifier = Modifier.rotate(iconRotation.toFloat()+upsideDownRotation), colors = if (offsetActive) activeColor else defaultColor, onClick = onClickAddScalaOffset) {
-            Icon(imageVector = measureToEdgeIcon, modifier = Modifier.rotate(180F), contentDescription = stringResource(id = R.string.SwitchScala))
+        IconButton(
+            modifier = Modifier.rotate(iconRotation.toFloat() + upsideDownRotation),
+            colors = if (offsetActive) activeColor else defaultColor,
+            onClick = onClickAddScalaOffset
+        ) {
+            Icon(
+                imageVector = measureToEdgeIcon,
+                modifier = Modifier.rotate(180F),
+                contentDescription = stringResource(id = R.string.SwitchScala)
+            )
         }
-        IconButton( colors = if (measureEndlessActive) activeColor else defaultColor, onClick = onMeasureEndless) {
-            Icon(imageVector = Icons.Filled.Repeat, modifier = Modifier.rotate(180F), contentDescription = stringResource(id = R.string.SwitchScala))
+        IconButton(
+            colors = if (measureEndlessActive) activeColor else defaultColor,
+            onClick = onMeasureEndless
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Repeat,
+                modifier = Modifier.rotate(180F),
+                contentDescription = stringResource(id = R.string.SwitchScala)
+            )
         }
-        IconButton( onClick = onMore) {
-            Icon(imageVector = Icons.Filled.MoreHoriz, contentDescription = stringResource(id = R.string.settings))
+        IconButton(onClick = onMore) {
+            Icon(
+                imageVector = Icons.Filled.MoreHoriz,
+                contentDescription = stringResource(id = R.string.settings)
+            )
         }
     }
 }

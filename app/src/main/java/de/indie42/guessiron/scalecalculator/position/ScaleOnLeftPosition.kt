@@ -3,7 +3,7 @@ package de.indie42.guessiron.scalecalculator.position
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 
-class ScaleOnLeftPosition: IScalePosition {
+class ScaleOnLeftPosition : IScalePosition {
     override fun getScaleStartX(drawSize: Size): Float {
         return 0F
     }

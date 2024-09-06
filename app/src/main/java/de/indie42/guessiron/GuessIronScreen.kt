@@ -169,7 +169,11 @@ fun GuessIronScreen(
         mutableIntStateOf(android.view.Surface.ROTATION_0)
     }
 
-    val acc = rememberSensorState( isLandsacpe = isLandsacpe, sensitivity = guessIronState.endlessAutomaticSensitivity, settlingTime = guessIronState.endlessAutomaticSettlingTime){
+    val acc = rememberSensorState(
+        isLandsacpe = isLandsacpe,
+        sensitivity = guessIronState.endlessAutomaticSensitivity,
+        settlingTime = guessIronState.endlessAutomaticSettlingTime
+    ) {
         viewModel.autoIncEndlessStepValue()
     }
 
@@ -191,7 +195,11 @@ fun GuessIronScreen(
 
     var sizeInDp by remember { mutableStateOf(IntSize.Zero) }
 
-    val scaleOffsetTotal: Float by animateFloatAsState(getScalaOffset(guessIronState), label = "a", animationSpec = guessIronState.scalaOffsetAnimation)
+    val scaleOffsetTotal: Float by animateFloatAsState(
+        getScalaOffset(guessIronState),
+        label = "a",
+        animationSpec = guessIronState.scalaOffsetAnimation
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -289,7 +297,7 @@ fun GuessIronScreen(
                 verticalArrangement = Arrangement.Center
             ) {
 
-                if (isLandsacpe){
+                if (isLandsacpe) {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
@@ -297,48 +305,55 @@ fun GuessIronScreen(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
-                        ){
-                        MainMenu(
-                            guessIronState,
-                            acc,
-                            scope,
-                            viewModel,
-                            true,
-                            measureButtonFunction = {
-                                doMeasureButtonClick(
-                                    guessIronState,
-                                    onShowConfigMeasureButton,
-                                    showSaveDialog = { showSaveDialog = true },
-                                    viewModel
-                                )
-                            },
-                            showConfigureDisplayBorder = {
-                                showConfigureDisplayBorder = true
-                            },
-                            showMeasureToEdgeNotSupported = {
-                                showMeasureToEdgeNotSupported = true
-                            },
-                            showHowToEndless = {if (!guessIronState.endlessMeasureHowToDisabled)
-                                showHowToEndless = !guessIronState.endlessModeActive
-                            },
-                            showMoreMenu = {
-                                acc.deactivateAutomatic()
-                                showMoreMenu = true
-                            }
-                        )
+                        ) {
+                            MainMenu(
+                                guessIronState,
+                                acc,
+                                scope,
+                                viewModel,
+                                true,
+                                measureButtonFunction = {
+                                    doMeasureButtonClick(
+                                        guessIronState,
+                                        onShowConfigMeasureButton,
+                                        showSaveDialog = { showSaveDialog = true },
+                                        viewModel
+                                    )
+                                },
+                                showConfigureDisplayBorder = {
+                                    showConfigureDisplayBorder = true
+                                },
+                                showMeasureToEdgeNotSupported = {
+                                    showMeasureToEdgeNotSupported = true
+                                },
+                                showHowToEndless = {
+                                    if (!guessIronState.endlessMeasureHowToDisabled)
+                                        showHowToEndless = !guessIronState.endlessModeActive
+                                },
+                                showMoreMenu = {
+                                    acc.deactivateAutomatic()
+                                    showMoreMenu = true
+                                }
+                            )
                         }
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
-                        ){
-                            MeasureEndlessMenu(guessIronState, acc, scope, viewModel, guessIronState.sizeInDistance, isLandsacpe = true, onShowInfo = {
-                                showEndlessAutomaticInfo = true
-                            })
+                        ) {
+                            MeasureEndlessMenu(
+                                guessIronState,
+                                acc,
+                                scope,
+                                viewModel,
+                                guessIronState.sizeInDistance,
+                                isLandsacpe = true,
+                                onShowInfo = {
+                                    showEndlessAutomaticInfo = true
+                                })
                         }
 
                     }
-                }
-                else {
+                } else {
                     MainMenu(
                         guessIronState,
                         acc,
@@ -365,25 +380,43 @@ fun GuessIronScreen(
                         },
                         showMoreMenu = {
                             acc.deactivateAutomatic()
-                            showMoreMenu = true }
+                            showMoreMenu = true
+                        }
                     )
-                    MeasureEndlessMenu(guessIronState, acc, scope, viewModel, guessIronState.sizeInDistance, isLandsacpe = false, onShowInfo = {
-                        showEndlessAutomaticInfo = true
-                    })
+                    MeasureEndlessMenu(
+                        guessIronState,
+                        acc,
+                        scope,
+                        viewModel,
+                        guessIronState.sizeInDistance,
+                        isLandsacpe = false,
+                        onShowInfo = {
+                            showEndlessAutomaticInfo = true
+                        })
                 }
             }
         }
 
         if (showHowToEndless) {
-            HowToEndless(guessIronState.sizeInDistance, onDismiss = { showHowToEndless = false }, onDisableHowTo = {
-                scope.launch { viewModel.disableEndlessMeasureHowTo() }
-            }, unit = guessIronState.unitSystem.getUnit(), isLandsacpe = isLandsacpe)
+            HowToEndless(
+                guessIronState.sizeInDistance,
+                onDismiss = { showHowToEndless = false },
+                onDisableHowTo = {
+                    scope.launch { viewModel.disableEndlessMeasureHowTo() }
+                },
+                unit = guessIronState.unitSystem.getUnit(),
+                isLandsacpe = isLandsacpe
+            )
         }
 
         if (showEndlessAutomaticInfo) {
-            HowToEndlessAutomatic(onDismiss = { showEndlessAutomaticInfo = false }, onDisableHowTo = {
-                scope.launch { viewModel.disableEndlessAutomaticInfo() }
-            }, isLandsacpe)
+            HowToEndlessAutomatic(
+                onDismiss = { showEndlessAutomaticInfo = false },
+                onDisableHowTo = {
+                    scope.launch { viewModel.disableEndlessAutomaticInfo() }
+                },
+                isLandsacpe
+            )
         }
 
         if (showMoreMenu) {
@@ -400,7 +433,7 @@ fun GuessIronScreen(
                 onShowCalibration = {
                     showMoreMenu = false
                     onShowCalibration()
-                                    },
+                },
                 onShowScreenBorder = {
                     showMoreMenu = false
                     onConfigDisplayBorder()
@@ -543,7 +576,10 @@ fun GuessIronScreen(
             )
 
             SaveDialog(
-                measuredValue = String.format( guessIronState.unitSystem.getFormat(), savedMeasuredDistance),
+                measuredValue = String.format(
+                    guessIronState.unitSystem.getFormat(),
+                    savedMeasuredDistance
+                ),
                 measuredUnit = guessIronState.unitSystem.getUnit(),
                 defaultName = "",
                 onDismissRequest = { showSaveDialog = false }) {
@@ -554,7 +590,7 @@ fun GuessIronScreen(
                         .setValue(savedMeasuredDistance)
                         .setUnit(guessIronState.unitSystem.getUnit())
                         .setName(it)
-                        .setMeasureType( if (guessIronState.endlessValue > 0 ) MeasuredValue.MeasureType.Endless else MeasuredValue.MeasureType.Single)
+                        .setMeasureType(if (guessIronState.endlessValue > 0) MeasuredValue.MeasureType.Endless else MeasuredValue.MeasureType.Single)
 
                 scope.launch {
                     viewModel.addMeasuredValue(measuredValue = newMeasuredItem.build())
@@ -602,11 +638,30 @@ private fun MainMenu(
 
         if (guessIronState.scalaDirection == ScalaDirection.Center) {
             val centerValue = guessIronState.measuredDistance / 2
-            Text(text = AnnotatedString(text = "${String.format(guessIronState.unitSystem.getFormat(), centerValue)} | ${String.format(guessIronState.unitSystem.getFormat(), guessIronState.measuredDistance)} ${guessIronState.unitSystem.getUnit()}"))
+            Text(
+                text = AnnotatedString(
+                    text = "${
+                        String.format(
+                            guessIronState.unitSystem.getFormat(),
+                            centerValue
+                        )
+                    } | ${
+                        String.format(
+                            guessIronState.unitSystem.getFormat(),
+                            guessIronState.measuredDistance
+                        )
+                    } ${guessIronState.unitSystem.getUnit()}"
+                )
+            )
         } else
             Text(
                 text = AnnotatedString(
-                    text = "${String.format(guessIronState.unitSystem.getFormat(), getMeasuredDistance(guessIronState))} ${guessIronState.unitSystem.getUnit()}"
+                    text = "${
+                        String.format(
+                            guessIronState.unitSystem.getFormat(),
+                            getMeasuredDistance(guessIronState)
+                        )
+                    } ${guessIronState.unitSystem.getUnit()}"
                 )
             )
     }
@@ -621,10 +676,11 @@ private fun MainMenu(
         },
         onClickAddScalaOffset = {
 
-            val displayBorderInvalid = (guessIronState.scalaDirection != ScalaDirection.Center && !guessIronState.scalaOffsetActive && guessIronState.scalaOffset == 0F) ||
-                    guessIronState.version == 0
+            val displayBorderInvalid =
+                (guessIronState.scalaDirection != ScalaDirection.Center && !guessIronState.scalaOffsetActive && guessIronState.scalaOffset == 0F) ||
+                        guessIronState.version == 0
 
-            if (guessIronState.version == 0){
+            if (guessIronState.version == 0) {
                 scope.launch {
                     viewModel.changeDisplayBorder(0F, 0F)
                 }
@@ -670,10 +726,16 @@ private fun ColumnScope.MeasureEndlessMenu(
     onShowInfo: () -> Unit
 ) {
 
-    val aniEnterDirection = if ( isLandsacpe ) fadeIn() + expandHorizontally() else fadeIn() + expandVertically()
-    val aniExitDirection = if ( isLandsacpe ) fadeOut() + shrinkHorizontally() else fadeOut() + shrinkVertically()
+    val aniEnterDirection =
+        if (isLandsacpe) fadeIn() + expandHorizontally() else fadeIn() + expandVertically()
+    val aniExitDirection =
+        if (isLandsacpe) fadeOut() + shrinkHorizontally() else fadeOut() + shrinkVertically()
 
-    AnimatedVisibility(guessIronState.endlessModeActive, enter = aniEnterDirection, exit = aniExitDirection) {
+    AnimatedVisibility(
+        guessIronState.endlessModeActive,
+        enter = aniEnterDirection,
+        exit = aniExitDirection
+    ) {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
@@ -707,7 +769,16 @@ private fun ColumnScope.MeasureEndlessMenu(
                                 "Extended floating action button."
                             )
                         },
-                        text = { Text(text = "${String.format(guessIronState.unitSystem.getFormat(), heightDistance)} ${guessIronState.unitSystem.getUnit()}") },
+                        text = {
+                            Text(
+                                text = "${
+                                    String.format(
+                                        guessIronState.unitSystem.getFormat(),
+                                        heightDistance
+                                    )
+                                } ${guessIronState.unitSystem.getUnit()}"
+                            )
+                        },
                     )
                 }
                 Row(
@@ -726,9 +797,13 @@ private fun ColumnScope.MeasureEndlessMenu(
                                 onShowInfo()
 
                             if (!acc.active.value)
-                                acc.activateAutomatic(guessIronState.endlessAutomaticSensitivity, guessIronState.endlessAutomaticSettlingTime)
+                                acc.activateAutomatic(
+                                    guessIronState.endlessAutomaticSensitivity,
+                                    guessIronState.endlessAutomaticSettlingTime
+                                )
                             else
-                                acc.deactivateAutomatic()},
+                                acc.deactivateAutomatic()
+                        },
                     ) {
                         Icon(Icons.Filled.AutoMode, "Floating action button.")
                     }
@@ -737,7 +812,7 @@ private fun ColumnScope.MeasureEndlessMenu(
                         onClick = {
                             viewModel.setMeasuredEndlessStepValue(0F)
                             viewModel.setMeasuredValue(0F, "")
-                                  },
+                        },
                     ) {
                         Icon(Icons.Filled.RestartAlt, "Floating action button.")
                     }
@@ -757,7 +832,13 @@ private fun ColumnScope.MeasureEndlessMenu(
 @Preview(showBackground = true)
 @Composable
 fun MoreMenuPreview() {
-    HowToEndless(scaleLength = 456F, onDismiss = {}, onDisableHowTo = {}, unit = "NN", isLandsacpe = true)
+    HowToEndless(
+        scaleLength = 456F,
+        onDismiss = {},
+        onDisableHowTo = {},
+        unit = "NN",
+        isLandsacpe = true
+    )
 }
 
 @Composable
@@ -772,11 +853,11 @@ fun HowToEndlessAutomatic(onDismiss: () -> Unit, onDisableHowTo: () -> Unit, isL
             shape = RoundedCornerShape(16.dp),
         ) {
             Column {
-                if (isLandsacpe){
+                if (isLandsacpe) {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         Column(
                             modifier = Modifier,
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -790,11 +871,12 @@ fun HowToEndlessAutomatic(onDismiss: () -> Unit, onDisableHowTo: () -> Unit, isL
                             )
                         }
                     }
-                }
-                else {
+                } else {
                     MeasureEndlessAutomaticAnimation()
-                    Column(horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         MeasureEndlessAutomaticText(
                             checkedState,
                             onStateChange,
@@ -811,7 +893,13 @@ fun HowToEndlessAutomatic(onDismiss: () -> Unit, onDisableHowTo: () -> Unit, isL
 }
 
 @Composable
-fun HowToEndless(scaleLength: Float, onDismiss: () -> Unit, onDisableHowTo: () -> Unit, unit: String, isLandsacpe: Boolean) {
+fun HowToEndless(
+    scaleLength: Float,
+    onDismiss: () -> Unit,
+    onDisableHowTo: () -> Unit,
+    unit: String,
+    isLandsacpe: Boolean
+) {
 
     val (checkedState, onStateChange) = remember { mutableStateOf(false) }
 
@@ -824,11 +912,11 @@ fun HowToEndless(scaleLength: Float, onDismiss: () -> Unit, onDisableHowTo: () -
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-                if (isLandsacpe){
+                if (isLandsacpe) {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         MeasureEndlessAnimation(scaleLength = scaleLength.toInt(), unit = unit)
                         Column(
                             modifier = Modifier,
@@ -843,8 +931,7 @@ fun HowToEndless(scaleLength: Float, onDismiss: () -> Unit, onDisableHowTo: () -
                             )
                         }
                     }
-                }
-                else{
+                } else {
                     MeasureEndlessAnimation(scaleLength = scaleLength.toInt(), unit = unit)
 
                     MeasureEndlessText(checkedState, onStateChange, onDisableHowTo, onDismiss)
@@ -964,9 +1051,14 @@ fun MeasureEndlessAutomaticAnimation() {
                     drawPath(myPath, color = primaryContainer)
 
                 }
-                .padding(16.dp)){
+                .padding(16.dp)) {
                 val offset = if (scale > 23.5) 24F else scale
-                ScalaBar(direction = ScalaDirection.Bottom, scalaStartDistance = offset, scalaFactor = 0.7F, forceLandscape = true)
+                ScalaBar(
+                    direction = ScalaDirection.Bottom,
+                    scalaStartDistance = offset,
+                    scalaFactor = 0.7F,
+                    forceLandscape = true
+                )
             }
         }
     }
@@ -1052,17 +1144,18 @@ fun MeasureEndlessAnimation(scaleLength: Int, unit: String) {
             .padding(top = 8.dp, start = 6.dp),
         color = MaterialTheme.colorScheme.background
     ) {
-        val iconStoppedPosition = (iconPosition > 28.dp && iconPosition < 32.dp) || (iconPosition > 58.dp && iconPosition < 62.dp) ||
-                (iconPosition > 88.dp && iconPosition < 92.dp)
+        val iconStoppedPosition =
+            (iconPosition > 28.dp && iconPosition < 32.dp) || (iconPosition > 58.dp && iconPosition < 62.dp) ||
+                    (iconPosition > 88.dp && iconPosition < 92.dp)
         val primaryContainer =
             if (iconStoppedPosition) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
 
         val repeatText = if (iconPosition > 28.dp && iconPosition < 32.dp)
-            (scaleLength*1).toString()+" "+unit
+            (scaleLength * 1).toString() + " " + unit
         else if (iconPosition > 58.dp && iconPosition < 62.dp)
-            (scaleLength*2).toString()+" "+unit
+            (scaleLength * 2).toString() + " " + unit
         else if (iconPosition > 88.dp && iconPosition < 92.dp)
-            (scaleLength*3).toString()+" "+unit
+            (scaleLength * 3).toString() + " " + unit
         else
             ""
 
@@ -1104,24 +1197,32 @@ fun MeasureEndlessAnimation(scaleLength: Int, unit: String) {
 
             }
         }
-        Column( verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally){
-        ExtendedFloatingActionButton(
-            modifier = Modifier
-                .scale(if (iconStoppedPosition) 1F else 0.8F)
-                .padding(
-                    bottom = 6.dp,
-                ),
-            onClick = {
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .scale(if (iconStoppedPosition) 1F else 0.8F)
+                    .padding(
+                        bottom = 6.dp,
+                    ),
+                onClick = {
 
-            },
-            icon = {
-                Icon(
-                    Icons.Filled.Add,
-                    "Extended floating action button."
-                )
-            },
-            text = { Text( text = "$scaleLength $unit", style = MaterialTheme.typography.bodySmall) },
-        )
+                },
+                icon = {
+                    Icon(
+                        Icons.Filled.Add,
+                        "Extended floating action button."
+                    )
+                },
+                text = {
+                    Text(
+                        text = "$scaleLength $unit",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                },
+            )
         }
     }
 }
@@ -1146,25 +1247,67 @@ private fun MoreMenu(
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column(modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
 
-                Row {Text(text = stringResource(id = R.string.measured), color = MaterialTheme.colorScheme.onPrimaryContainer) }
-                MoreMenuItem(onClickable = onShowSaveDialog, icon = Icons.Filled.Save, text = stringResource(id = R.string.Save))
-                MoreMenuItem(onClickable = onClickShowMeasured, icon = Icons.AutoMirrored.Filled.List, text = stringResource(id = R.string.Show))
+                Row {
+                    Text(
+                        text = stringResource(id = R.string.measured),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+                MoreMenuItem(
+                    onClickable = onShowSaveDialog,
+                    icon = Icons.Filled.Save,
+                    text = stringResource(id = R.string.Save)
+                )
+                MoreMenuItem(
+                    onClickable = onClickShowMeasured,
+                    icon = Icons.AutoMirrored.Filled.List,
+                    text = stringResource(id = R.string.Show)
+                )
 
-                Row {Text(text = stringResource(id = R.string.settings), color = MaterialTheme.colorScheme.onPrimaryContainer) }
-                MoreMenuItem(onClickable = onShowCalibration, icon = Icons.Filled.ZoomOutMap, text = stringResource(id = R.string.calibration))
-                MoreMenuItem(onClickable = onShowScreenBorder, icon = Icons.Filled.Dock, text = stringResource(id = R.string.ScreenMargin))
-                MoreMenuItem(onClickable = onShowConfigEndlessAutomatic, icon = Icons.Filled.AutoMode, text = stringResource(id = R.string.AutomaticSetting))
-                MoreMenuItem(onClickable = onShowConfigUnitsystem, icon = Icons.Filled.Equalizer, text = stringResource(id = R.string.Unitsystem))
-                MoreMenuItem(onClickable = onShowConfigMeasureButton, icon = Icons.Filled.Pin, text = stringResource(id = R.string.FunctionMeasureButtton))
+                Row {
+                    Text(
+                        text = stringResource(id = R.string.settings),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+                MoreMenuItem(
+                    onClickable = onShowCalibration,
+                    icon = Icons.Filled.ZoomOutMap,
+                    text = stringResource(id = R.string.calibration)
+                )
+                MoreMenuItem(
+                    onClickable = onShowScreenBorder,
+                    icon = Icons.Filled.Dock,
+                    text = stringResource(id = R.string.ScreenMargin)
+                )
+                MoreMenuItem(
+                    onClickable = onShowConfigEndlessAutomatic,
+                    icon = Icons.Filled.AutoMode,
+                    text = stringResource(id = R.string.AutomaticSetting)
+                )
+                MoreMenuItem(
+                    onClickable = onShowConfigUnitsystem,
+                    icon = Icons.Filled.Equalizer,
+                    text = stringResource(id = R.string.Unitsystem)
+                )
+                MoreMenuItem(
+                    onClickable = onShowConfigMeasureButton,
+                    icon = Icons.Filled.Pin,
+                    text = stringResource(id = R.string.FunctionMeasureButtton)
+                )
             }
         }
     }
 }
 
 @Composable
-fun MoreMenuItem( onClickable: () -> Unit, icon: ImageVector, rotateIcon: Float = 0F, text: String) {
+fun MoreMenuItem(onClickable: () -> Unit, icon: ImageVector, rotateIcon: Float = 0F, text: String) {
     Row(
         modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 8.dp)
@@ -1197,7 +1340,8 @@ fun dynamicSystemBar(isLandsacpe: Boolean): WindowInsets {
 
     return if (isLandsacpe) {
         WindowInsetsControllerCompat(activity.window, activity.window.decorView).let { controller ->
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             controller.hide(WindowInsetsCompat.Type.systemBars())
         }
         WindowInsets.statusBars

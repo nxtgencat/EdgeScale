@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GuessIron"
+rootProject.name = "EdgeScale"
 include(":app")

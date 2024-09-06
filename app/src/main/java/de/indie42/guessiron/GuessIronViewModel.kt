@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -55,6 +54,7 @@ data class GuessIronDataState(
     val measuredValues: List<MeasuredValue> = arrayListOf(),
     val displayBorder: DisplayBorder = DisplayBorder.getDefaultInstance(),
 )
+
 class GuessIronViewModel(
     private val guessIronDataRepository: GuessIronDataRepository,
 ) : ViewModel() {
@@ -82,13 +82,13 @@ class GuessIronViewModel(
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, GuessIronDataState())
 
-    fun validateProtoBuf(){
-            viewModelScope.launch {
-                val data = guessIronDataRepository.guessIronDataFlow.first()
+    fun validateProtoBuf() {
+        viewModelScope.launch {
+            val data = guessIronDataRepository.guessIronDataFlow.first()
 
-                if (data.version == 0)
-                    guessIronDataRepository.upgradeValues(1)
-            }
+            if (data.version == 0)
+                guessIronDataRepository.upgradeValues(1)
+        }
     }
 
     private fun copyValuesToUiState(item: GuessIronData) {
@@ -102,13 +102,18 @@ class GuessIronViewModel(
                 else -> 0F
             }
 
-            val newUnitsystem = if (currentState.unitSystem.getUnitsystem() != item.unitSystem){
-                unitsystemConverter.getUnitsystem(item.unitSystem) } else
+            val newUnitsystem = if (currentState.unitSystem.getUnitsystem() != item.unitSystem) {
+                unitsystemConverter.getUnitsystem(item.unitSystem)
+            } else
                 currentState.unitSystem
 
-            val measuredDistanceWithOffset = currentState.measuredDistance - getCurrentScalaOffset(item.scalaOffsetActive, scalaOffset)
+            val measuredDistanceWithOffset = currentState.measuredDistance - getCurrentScalaOffset(
+                item.scalaOffsetActive,
+                scalaOffset
+            )
 
-            val offset = if (item.scalaOffsetActive)item.displayBorder.top + item.displayBorder.bottom else 0
+            val offset =
+                if (item.scalaOffsetActive) item.displayBorder.top + item.displayBorder.bottom else 0
 
             currentState.copy(
                 version = item.version,
@@ -122,15 +127,26 @@ class GuessIronViewModel(
                 scalaOffsetTop = item.displayBorder.top,
                 scalaOffsetBottom = item.displayBorder.bottom,
                 endlessModeActive = item.endlessModeActive,
-                endlessValue = if (item.endlessModeActive) unitsystemConverter.convert(currentState.endlessValue, currentState.unitSystem, newUnitsystem) else 0F,
+                endlessValue = if (item.endlessModeActive) unitsystemConverter.convert(
+                    currentState.endlessValue,
+                    currentState.unitSystem,
+                    newUnitsystem
+                ) else 0F,
                 measuredPixel = convertDistanceToPixel(measuredDistanceWithOffset),
-                measuredDistance = unitsystemConverter.convert(currentState.measuredDistance, currentState.unitSystem, newUnitsystem),
+                measuredDistance = unitsystemConverter.convert(
+                    currentState.measuredDistance,
+                    currentState.unitSystem,
+                    newUnitsystem
+                ),
                 unitSystem = newUnitsystem,
                 measuerButtonFunction = item.measureButtonFunction,
                 scalaOffsetAnimation = snap(),
-                sizeInDistance = convertPixelToDistance(currentState.sizeInPixel.toFloat(), offset.toFloat()),
-                endlessAutomaticSensitivity = if ( item.automacticSetting.sensitivity > 0 ) item.automacticSetting.sensitivity else currentState.endlessAutomaticSensitivity,
-                endlessAutomaticSettlingTime = if ( item.automacticSetting.settlingTime >= 500 ) item.automacticSetting.settlingTime else currentState.endlessAutomaticSettlingTime
+                sizeInDistance = convertPixelToDistance(
+                    currentState.sizeInPixel.toFloat(),
+                    offset.toFloat()
+                ),
+                endlessAutomaticSensitivity = if (item.automacticSetting.sensitivity > 0) item.automacticSetting.sensitivity else currentState.endlessAutomaticSensitivity,
+                endlessAutomaticSettlingTime = if (item.automacticSetting.settlingTime >= 500) item.automacticSetting.settlingTime else currentState.endlessAutomaticSettlingTime
             )
         }
     }
@@ -163,8 +179,16 @@ class GuessIronViewModel(
 
         val destinationUnitsystem = unitsystemConverter.getUnitsystem(unitSystem)
 
-        val scaleOffsetTop = unitsystemConverter.convert(_uiState.value.scalaOffsetTop, _uiState.value.unitSystem, destinationUnitsystem)
-        val scaleOffsetBottom = unitsystemConverter.convert(_uiState.value.scalaOffsetBottom, _uiState.value.unitSystem, destinationUnitsystem)
+        val scaleOffsetTop = unitsystemConverter.convert(
+            _uiState.value.scalaOffsetTop,
+            _uiState.value.unitSystem,
+            destinationUnitsystem
+        )
+        val scaleOffsetBottom = unitsystemConverter.convert(
+            _uiState.value.scalaOffsetBottom,
+            _uiState.value.unitSystem,
+            destinationUnitsystem
+        )
 
         val newDisplayBorder = DisplayBorder.newBuilder()
             .setTop(scaleOffsetTop)
@@ -293,10 +317,12 @@ class GuessIronViewModel(
 
             currentState.copy(
                 measuredPixel = y,
-                measuredDistance = convertPixelToDistance(y, getCurrentScalaOffset(
-                    currentState.scalaOffsetActive,
-                    currentState.scalaOffset
-                ))
+                measuredDistance = convertPixelToDistance(
+                    y, getCurrentScalaOffset(
+                        currentState.scalaOffsetActive,
+                        currentState.scalaOffset
+                    )
+                )
             )
 
         }
@@ -332,11 +358,12 @@ class GuessIronViewModel(
 
         _uiState.update { currentState ->
 
-            var measuredPixelOnScala = when (scalaDirectionByRotation(currentState, displayRotation)) {
-                ScalaDirection.Top -> measuredPixel
-                ScalaDirection.Bottom -> displayPixel - measuredPixel
-                ScalaDirection.Center -> (displayCenter - measuredPixel) * 2
-            }
+            var measuredPixelOnScala =
+                when (scalaDirectionByRotation(currentState, displayRotation)) {
+                    ScalaDirection.Top -> measuredPixel
+                    ScalaDirection.Bottom -> displayPixel - measuredPixel
+                    ScalaDirection.Center -> (displayCenter - measuredPixel) * 2
+                }
 
             if (measuredPixelOnScala < 0)
                 measuredPixelOnScala *= -1
@@ -358,19 +385,21 @@ class GuessIronViewModel(
 
         val unitWithDefault = if (unit == "") "mm" else unit
 
-        val distanceInCurrentUnit = if ( _uiState.value.unitSystem.getUnit() != unitWithDefault){
+        val distanceInCurrentUnit = if (_uiState.value.unitSystem.getUnit() != unitWithDefault) {
             val sourceUnitsystem = unitsystemConverter.getUnitsystemFromUnit(unitWithDefault)
 
-            unitsystemConverter.convert(distance, sourceUnitsystem, _uiState.value.unitSystem )
+            unitsystemConverter.convert(distance, sourceUnitsystem, _uiState.value.unitSystem)
         } else
             distance
 
         _uiState.update { currentState ->
 
-            val measuredPixel = convertDistanceToPixel(distanceInCurrentUnit - getCurrentScalaOffset(
-                currentState.scalaOffsetActive,
-                currentState.scalaOffset
-            ) )
+            val measuredPixel = convertDistanceToPixel(
+                distanceInCurrentUnit - getCurrentScalaOffset(
+                    currentState.scalaOffsetActive,
+                    currentState.scalaOffset
+                )
+            )
 
             currentState.copy(
                 measuredPixel = measuredPixel,
@@ -384,7 +413,8 @@ class GuessIronViewModel(
 
         _uiState.update { currentState ->
 
-            val offset = if (currentState.scalaOffsetActive) currentState.scalaOffsetTop + currentState.scalaOffsetBottom else 0F
+            val offset =
+                if (currentState.scalaOffsetActive) currentState.scalaOffsetTop + currentState.scalaOffsetBottom else 0F
 
             currentState.copy(
                 sizeInPixel = sizeinPixel,
@@ -393,13 +423,16 @@ class GuessIronViewModel(
         }
     }
 
-    fun autoIncEndlessStepValue(){
+    fun autoIncEndlessStepValue() {
         viewModelScope.launch {
             _uiState.update { currentState ->
 
                 currentState.copy(
                     endlessValue = currentState.sizeInDistance + currentState.endlessValue,
-                    scalaOffsetAnimation = tween(durationMillis = 750, easing = LinearOutSlowInEasing)
+                    scalaOffsetAnimation = tween(
+                        durationMillis = 750,
+                        easing = LinearOutSlowInEasing
+                    )
                 )
             }
         }
@@ -409,7 +442,7 @@ class GuessIronViewModel(
 
         _uiState.update { currentState ->
             currentState.copy(
-                endlessValue = if (millimeter < 0 ) 0F else millimeter,
+                endlessValue = if (millimeter < 0) 0F else millimeter,
                 scalaOffsetAnimation = tween(durationMillis = 750, easing = LinearOutSlowInEasing)
             )
         }

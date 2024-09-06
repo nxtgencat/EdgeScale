@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import de.indie42.guessiron.UnitSystem
 
-class UnitSystemImperial: IUnitsystem {
+class UnitSystemImperial : IUnitsystem {
     override fun getUnitsystem(): UnitSystem {
         return UnitSystem.IMPERIAL
     }

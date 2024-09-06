@@ -80,7 +80,7 @@ fun ScalaCalibrationScreen(mode: Int = 0, viewModel: GuessIronViewModel, onBack:
 
     val guessIronUiState by viewModel.uiState.collectAsState()
 
-    var calibratingDistance by rememberSaveable { mutableFloatStateOf(0F ) }
+    var calibratingDistance by rememberSaveable { mutableFloatStateOf(0F) }
     var showHowToDialog by rememberSaveable { mutableStateOf(true) }
     var newScalaFactor by rememberSaveable { mutableFloatStateOf(guessIronUiState.scalaFactor) }
 
@@ -91,7 +91,7 @@ fun ScalaCalibrationScreen(mode: Int = 0, viewModel: GuessIronViewModel, onBack:
 
     Surface(
         modifier = Modifier.fillMaxSize()
-     ) {
+    ) {
         Surface(
             modifier = Modifier
                 .windowInsetsPadding(winInsetsSystembars)
@@ -145,21 +145,21 @@ fun ScalaCalibrationScreen(mode: Int = 0, viewModel: GuessIronViewModel, onBack:
                     }
                 },
             color = MaterialTheme.colorScheme.background
-        ){
-        ScalaBar(
-            guessIronUiState.scalaDirection,
-            ScalaPosition.Left,
-            measuredDistance = calibratingDistance,
-            scalaFactor = newScalaFactor,
-            unitSystem = guessIronUiState.unitSystem
-        )
-        ScalaBar(
-            guessIronUiState.scalaDirection,
-            ScalaPosition.Right,
-            measuredDistance = calibratingDistance,
-            scalaFactor = newScalaFactor,
-            unitSystem = guessIronUiState.unitSystem
-        )
+        ) {
+            ScalaBar(
+                guessIronUiState.scalaDirection,
+                ScalaPosition.Left,
+                measuredDistance = calibratingDistance,
+                scalaFactor = newScalaFactor,
+                unitSystem = guessIronUiState.unitSystem
+            )
+            ScalaBar(
+                guessIronUiState.scalaDirection,
+                ScalaPosition.Right,
+                measuredDistance = calibratingDistance,
+                scalaFactor = newScalaFactor,
+                unitSystem = guessIronUiState.unitSystem
+            )
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,27 +176,33 @@ fun ScalaCalibrationScreen(mode: Int = 0, viewModel: GuessIronViewModel, onBack:
                 style = MaterialTheme.typography.titleMedium,
             )
 
-            if (isLandsacpe){
-                Row (horizontalArrangement = Arrangement.Center) {
-                    OutlinedButton( modifier = Modifier.padding(horizontal = 4.dp), onClick = onBack) {
+            if (isLandsacpe) {
+                Row(horizontalArrangement = Arrangement.Center) {
+                    OutlinedButton(
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        onClick = onBack
+                    ) {
                         Text(text = AnnotatedString(text = stringResource(id = R.string.Cancel)))
                     }
                     Button(modifier = Modifier.padding(horizontal = 4.dp), onClick = {
                         scope.launch {
                             viewModel.changeScalaFactor(newScalaFactor)
                         }
-                        onBack() }) {
+                        onBack()
+                    }) {
                         Text(text = AnnotatedString(text = stringResource(id = R.string.Ok)))
                     }
                 }
-            }
-            else{
-                CalibrationOkAndCancel(onOk = {
-                    scope.launch {
-                        viewModel.changeScalaFactor(newScalaFactor)
-                    }
-                    onBack() },
-                    onBack = onBack)
+            } else {
+                CalibrationOkAndCancel(
+                    onOk = {
+                        scope.launch {
+                            viewModel.changeScalaFactor(newScalaFactor)
+                        }
+                        onBack()
+                    },
+                    onBack = onBack
+                )
             }
 
             if (showHowToDialog) {
@@ -204,18 +210,25 @@ fun ScalaCalibrationScreen(mode: Int = 0, viewModel: GuessIronViewModel, onBack:
                     ScalaCalibrationMode.Ruler -> {
                         CalibrationModeRuler(onOk = { showHowToDialog = false })
                     }
+
                     ScalaCalibrationMode.Card -> {
                         CalibrationModeCard(onOk = {
-                            calibratingDistance = if (guessIronUiState.unitSystem.getUnitsystem() == UnitSystem.IMPERIAL) 53.98F / 2.54F else 53.98F
-                            showHowToDialog = false })
-                    }
-                    ScalaCalibrationMode.UserDef -> {
-                        CalibrationModeUserDef(onOk = {
-                            calibratingDistance = it * guessIronUiState.unitSystem.getDecimal()
+                            calibratingDistance =
+                                if (guessIronUiState.unitSystem.getUnitsystem() == UnitSystem.IMPERIAL) 53.98F / 2.54F else 53.98F
                             showHowToDialog = false
-                        },
-                            guessIronUiState.unitSystem.getUnit(), onBack)
+                        })
                     }
+
+                    ScalaCalibrationMode.UserDef -> {
+                        CalibrationModeUserDef(
+                            onOk = {
+                                calibratingDistance = it * guessIronUiState.unitSystem.getDecimal()
+                                showHowToDialog = false
+                            },
+                            guessIronUiState.unitSystem.getUnit(), onBack
+                        )
+                    }
+
                     else -> onBack()
                 }
             }
@@ -231,7 +244,7 @@ private fun CalibrationModeUserDef(
     onBack: () -> Unit
 ) {
     var showUserDefDialog by rememberSaveable { mutableStateOf(true) }
-    var calibratingDistance by rememberSaveable { mutableFloatStateOf(0F ) }
+    var calibratingDistance by rememberSaveable { mutableFloatStateOf(0F) }
 
     if (showUserDefDialog) {
         UserDefDialog(
@@ -322,7 +335,7 @@ fun UserDefDialog(
                             .focusRequester(focusInput),
                         onValueChange = {
                             text = it.replace("-", "")
-                                      .replace(" ", "")
+                                .replace(" ", "")
                                 .replace(decimalFormatSymbols.groupingSeparator.toString(), "")
 
 
@@ -357,7 +370,12 @@ fun UserDefDialog(
                     }
                     TextButton(
                         onClick = {
-                            val distance = try { text.replace(decimalFormatSymbols.decimalSeparator.toString(), ".").toFloat()} catch (e: NumberFormatException) { null }
+                            val distance = try {
+                                text.replace(decimalFormatSymbols.decimalSeparator.toString(), ".")
+                                    .toFloat()
+                            } catch (e: NumberFormatException) {
+                                null
+                            }
                             if (distance != null)
                                 onConfirmation(distance)
                         },
@@ -428,7 +446,7 @@ fun CalibrationInfoDialog(
                     ) {
                         Surface(
                             modifier = Modifier
-                                .padding( top =  if (isLandsacpe) 0.dp else 16.dp)
+                                .padding(top = if (isLandsacpe) 0.dp else 16.dp)
                                 .height(200.dp),
                             color = MaterialTheme.colorScheme.background,
                         ) {
@@ -440,13 +458,16 @@ fun CalibrationInfoDialog(
                         }
                         if (withCreditcard) {
                             Box(
-                                modifier = Modifier.padding(start = if (isLandsacpe) 0.dp else 56.dp, top = if (isLandsacpe) 16.dp else 0.dp)
+                                modifier = Modifier.padding(
+                                    start = if (isLandsacpe) 0.dp else 56.dp,
+                                    top = if (isLandsacpe) 16.dp else 0.dp
+                                )
                             ) {
                                 Surface(
                                     modifier = Modifier
                                         .padding(if (isLandsacpe) 0.dp else 16.dp)
-                                        .width( if (isLandsacpe ) 125.dp else 192.dp)
-                                        .height( if (isLandsacpe ) 180.dp else 125.dp),
+                                        .width(if (isLandsacpe) 125.dp else 192.dp)
+                                        .height(if (isLandsacpe) 180.dp else 125.dp),
                                     shape = RoundedCornerShape(20.dp),
                                     color = MaterialTheme.colorScheme.primaryContainer,
                                 ) {

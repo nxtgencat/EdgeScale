@@ -2,9 +2,9 @@ package de.indie42.guessiron.unitsystem
 
 import de.indie42.guessiron.UnitSystem
 
-class UnitsystemConverter{
+class UnitsystemConverter {
 
-    fun convert(distance: Float, sourceSystem: IUnitsystem, destinationSystem: IUnitsystem): Float{
+    fun convert(distance: Float, sourceSystem: IUnitsystem, destinationSystem: IUnitsystem): Float {
         val baseValue = sourceSystem.convertToBaseUnit(distance)
         return destinationSystem.convertFromBaseUnit(baseValue)
     }

@@ -80,7 +80,10 @@ fun AutomaticSettingScreen(viewModel: GuessIronViewModel, onBack: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge
             )
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = stringResource(id = R.string.Sensitivity), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(id = R.string.Sensitivity),
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(text = stringResource(id = R.string.SensitivityInfo))
                 Column(
                     modifier = Modifier.padding(8.dp),
@@ -108,7 +111,10 @@ fun AutomaticSettingScreen(viewModel: GuessIronViewModel, onBack: () -> Unit) {
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
-                Text(text = stringResource(id = R.string.SettlingTime), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(id = R.string.SettlingTime),
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(text = stringResource(id = R.string.SettlingTimeInfo))
                 Column(
                     modifier = Modifier.padding(8.dp),
