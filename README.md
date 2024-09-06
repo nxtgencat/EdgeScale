@@ -1,4 +1,4 @@
-# GuessIron
+# EdgeScale
 
 Use your phone as a ruler
 
